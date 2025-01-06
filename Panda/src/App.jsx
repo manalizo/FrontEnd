@@ -9,7 +9,7 @@ import "/node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 
 import "/node_modules/bootstrap/dist/css/bootstrap.min.css"
-import AddRoom from "./components/product/AddProduct"
+import AddProduct from "./components/product/AddProduct"
 import Home from './components/home/Home'
 import ExistingRooms from './components/product/ExistingProduct'
 import { Routes, Route } from "react-router-dom"
@@ -35,7 +35,7 @@ function App() {
         
         <Route path="/browse-all-rooms" element={<RoomListing />} /> 
           <Route path="/existing-rooms"  exact element={<ExistingRooms/>}/>
-          <Route path="/add-room"  exact element={<AddRoom/>}/>
+          <Route path="/add-product"  exact element={<AddProduct/>}/>
           <Route path="/edit-room/:roomId"  exact element={<EditRoom/>}/>
           <Route path="/admin"  exact element={<Admin/>}/>
           <Route path="/booking-success" element={<BookingSuccess />} />

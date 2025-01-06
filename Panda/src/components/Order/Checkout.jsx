@@ -1,7 +1,7 @@
 
 import BookingForm from "./BookingRoomForm"
 import React, { useEffect, useState } from "react"
-import BookingRoomForm from "../bookings/BookingRoomForm"
+import BookingRoomForm from "../Order/BookingRoomForm"
 import {
 	FaUtensils,
 	FaWifi,

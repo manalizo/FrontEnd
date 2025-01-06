@@ -1,9 +1,77 @@
 import axios from "axios"
 
 export const api=axios.create({
-    baseURL:"http://localhost:9192"
+    baseURL:"http://localhost:8083"
 })
 /*function add new room to the database*/
+
+
+export async function getAllProducts() {
+  try {
+    const result = await api.get('/products');
+    return result.data;
+  } catch (error) {
+    throw new Error('Error fetching products');
+  }
+}
+/*
+export async function addProduct(productData) {
+  const response = await api.post('/products/create', productData);
+  return response.data;
+}*/
+
+export async function addProduct(titre,description,image,prix){
+    const formData=new FormData()
+	formData.append("titre",titre)
+    formData.append("description",description)
+	formData.append("image",image)
+	formData.append("prix",prix)
+    const response = await api.post('/products/create', formData);
+	return response.data;
+   
+    
+}
+
+
+/* Thi
+
+export async function deleteProduct(productId) {
+  const response = await api.delete(`/products/${productId}`);
+  return response.data;
+}
+
+export async function updateProduct(productId, productData) {
+  const response = await api.put(`/products/${productId}`, productData);
+  return response.data;
+}
+
+export async function getProductById(productId) {
+  try {
+    const result = await api.get(`/products/${productId}`);
+    return result.data;
+  } catch (error) {
+    throw new Error('Error fetching product');
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export async function addRoom(photo,roomType,roomPrice){
     const formData=new FormData()
     formData.append("photo",photo)
