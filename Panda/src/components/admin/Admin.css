@@ -1,0 +1,65 @@
+.panda-container {
+    background-color: #ffffff; /* White background */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for a modern look */
+  }
+  
+  .panda-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .panda-logo {
+    width: 100px;
+    height: auto;
+  }
+  
+  h2 {
+    color: #000000; /* Black for text */
+  }
+  
+  .panda-description {
+    font-size: 18px;
+    color: #b24242; /* Light red */
+  }
+  
+  .panda-hr {
+    border: 2px solid #ff6f61; /* Light red border */
+    margin: 20px 0;
+  }
+  
+  .panda-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Add space between the buttons */
+    margin-top: 20px;
+  }
+  
+  .panda-button {
+    text-decoration: none;
+    color: #ffffff; /* White text */
+    background-color: #763133; /* Light red background */
+    padding: 15px 30px;
+    border-radius: 25px; /* Rounded button */
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover animation */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Button shadow for depth */
+  }
+  
+  .panda-button:hover {
+    background-color: #000000; /* Black background on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+  }
+  
+  .panda-button:active {
+    transform: translateY(2px); /* Button presses down when clicked */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduce shadow on click */
+  }
+  
