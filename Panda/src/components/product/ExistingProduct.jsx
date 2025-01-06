@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { deleteRoom, getAllRooms } from "../utils/ApiFunctions";
+import { deleteProduct, getAllProducts } from "../utils/ApiFunctions";
 import { Col, Row } from "react-bootstrap";
 import RoomPaginator from "../common/RoomPaginator";
 import { FaEdit, FaEye, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const ExistingRooms = () => {
-  const [rooms, setRooms] = useState([]);
+const ExistingProducts = () => {
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [roomsPerPage] = useState(8);
+  const [productsPerPage] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    fetchRooms();
+    fetchProducts();
   }, []);
 
-  const fetchRooms = async () => {
+  const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const result = await getAllRooms();
-      setRooms(result);
+      const result = await getAllProducts();
+      setProducts(result);
       setIsLoading(false);
     } catch (error) {
       setErrorMessage(error.message);
@@ -33,11 +33,11 @@ const ExistingRooms = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleDelete = async (roomId) => {
+  const handleDelete = async (productId) => {
     try {
-      const result = await deleteRoom(roomId);
+      const result = await deleteProduct(productId);
       if (result === "") {
-        setSuccessMessage(`Room No ${roomId} was deleted`);
+        setSuccessMessage(`Room No ${productId} was deleted`);
         fetchRooms();
       } else {
         console.error(`Error deleting room : ${result.message}`);
@@ -52,12 +52,12 @@ const ExistingRooms = () => {
   };
 
   const calculateTotalPages = () => {
-    return Math.ceil(rooms.length / roomsPerPage);
+    return Math.ceil(products.length / productsPerPage);
   };
 
-  const indexOfLastRoom = currentPage * roomsPerPage;
-  const indexOfFirstRoom = indexOfLastRoom - roomsPerPage;
-  const currentRooms = rooms.slice(indexOfFirstRoom, indexOfLastRoom);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
   return (
     <>
@@ -72,18 +72,18 @@ const ExistingRooms = () => {
       </div>
 
       {isLoading ? (
-        <p>Loading existing rooms</p>
+        <p>Loading existing Products</p>
       ) : (
         <>
           <section className="mt-5 mb-5 container">
             <div className="d-flex justify-content-between mb-3 mt-5">
-              <h2>Existing Rooms</h2>
+              <h2>Existing Products</h2>
             </div>
 
             <Row>
               <Col md={6} className="d-flex justify-content-end">
-                <Link to={"/add-room"}>
-                  <FaPlus /> Add Room
+                <Link to={"/add-product"}>
+                  <FaPlus /> Add Product
                 </Link>
               </Col>
             </Row>
@@ -92,20 +92,20 @@ const ExistingRooms = () => {
               <thead>
                 <tr className="text-center">
                   <th>ID</th>
-                  <th>Room Type</th>
-                  <th>Room Price</th>
+                  <th>Product Name</th>
+                  <th>Product Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
 
               <tbody>
-                {currentRooms.map((room) => (
-                  <tr key={room.id} className="text-center">
-                    <td>{room.id}</td>
-                    <td>{room.roomType}</td>
-                    <td>{room.roomPrice}</td>
+                {currentProducts.map((product) => (
+                  <tr key={product.id} className="text-center">
+                    <td>{product.id}</td>
+                    <td>{product.titre}</td>
+                    <td>{product.prix}</td>
                     <td className="gap-2">
-                      <Link to={`/edit-room/${room.id}`} className="gap-2">
+                      <Link to={`/edit-product/${product.id}`} className="gap-2">
                        
                         <span className="btn btn-warning btn-sm ml-2">
                           <FaEdit />
@@ -113,7 +113,7 @@ const ExistingRooms = () => {
                       </Link >
                       <button
                         className="btn btn-danger btn-sm ml-2"
-                        onClick={() => handleDelete(room.id)}
+                        onClick={() => handleDelete(product.id)}
                       >
                         <FaTrashAlt />
                       </button>
@@ -134,4 +134,4 @@ const ExistingRooms = () => {
   );
 };
 
-export default ExistingRooms;
+export default ExistingProducts;

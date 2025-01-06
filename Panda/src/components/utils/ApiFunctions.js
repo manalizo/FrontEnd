@@ -33,7 +33,7 @@ export async function addProduct(titre,description,image,prix){
 }
 
 
-/* Thi
+
 
 export async function deleteProduct(productId) {
   const response = await api.delete(`/products/${productId}`);
