@@ -1,12 +1,12 @@
 import React from "react"
-import Room from "./Product"
+import Product from "./Product"
 
-const RoomListing = () => {
+const ProductListing = () => {
 	return (
 		<section className="bg-light p-2 mb-5 mt-5 shadow">
-			<Room />
+			<Product />
 		</section>
 	)
 }
 
-export default RoomListing
+export default ProductListing

@@ -44,6 +44,14 @@ export async function updateProduct(productId, productData) {
   const response = await api.put(`/products/${productId}`, productData);
   return response.data;
 }
+export async function getProductImageById(productId) {
+	try {
+	  const result = await api.get(`/products/${productId}/image`);
+	  return result.data;
+	} catch (error) {
+	  throw new Error('Error fetching product image');
+	}
+  }
 
 export async function getProductById(productId) {
   try {

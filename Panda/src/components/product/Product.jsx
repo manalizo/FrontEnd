@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react"
-import { getAllRooms } from "../utils/ApiFunctions"
-import RoomCard from "./ProductCard"
+import { getAllProducts } from "../utils/ApiFunctions"
+import ProductCard from "./ProductCard"
 import { Col, Container, Row } from "react-bootstrap"
 
 import RoomPaginator from "../common/RoomPaginator"
 
-const Room = () => {
+const Product = () => {
 	const [data, setData] = useState([])
 	const [error, setError] = useState(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [currentPage, setCurrentPage] = useState(1)
-	const [roomsPerPage] = useState(6)
+	const [productPerPage] = useState(6)
 	
 	useEffect(() => {
 		setIsLoading(true)
-		getAllRooms()
+		getAllProducts()
 			.then((data) => {
 				setData(data)
 				
@@ -26,7 +26,7 @@ const Room = () => {
 			})
 	}, [])
 	if (isLoading) {
-		return <div>Loading rooms.....</div>
+		return <div>Loading products.....</div>
 	}
 	if (error) {
 		return <div className=" text-danger">Error : {error}</div>
@@ -36,21 +36,21 @@ const Room = () => {
 		setCurrentPage(pageNumber)
 	}
 
-	const totalPages = Math.ceil(data.length / roomsPerPage)
+	const totalPages = Math.ceil(data.length / productPerPage)
 
-	const renderRooms = () => {
-		const startIndex = (currentPage - 1) * roomsPerPage
-		const endIndex = startIndex + roomsPerPage
+	const renderProducts = () => {
+		const startIndex = (currentPage - 1) * productPerPage
+		const endIndex = startIndex + productPerPage
 		return data
 			.slice(startIndex, endIndex)
-			.map((room) => <RoomCard key={room.id} room={room} />)
+			.map((product) => <ProductCard key={product.id} product={product} />)
 	}
 
 	return (
 		<Container>
 			
 
-			<Row>{renderRooms()}</Row>
+			<Row>{renderProducts()}</Row>
 
 			<Row>
 				<Col md={6} className="d-flex align-items-center justify-content-end">
@@ -65,4 +65,4 @@ const Room = () => {
 	)
 }
 
-export default Room
+export default Product
