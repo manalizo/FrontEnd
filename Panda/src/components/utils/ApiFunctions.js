@@ -44,14 +44,18 @@ export async function updateProduct(productId, productData) {
   const response = await api.put(`/products/${productId}`, productData);
   return response.data;
 }
+
+
 export async function getProductImageById(productId) {
-	try {
-	  const result = await api.get(`/products/${productId}/image`);
-	  return result.data;
-	} catch (error) {
-	  throw new Error('Error fetching product image');
-	}
+  try {
+    const result = await axios.get(`/api/products/${productId}/image`);
+    return result.data; // This will be the base64 string
+  } catch (error) {
+    console.error('Error fetching product image:', error);
+    throw new Error('Error fetching product image');
   }
+}
+
 
 export async function getProductById(productId) {
   try {
