@@ -45,8 +45,8 @@ const Productarousel = () => {
 										<Link to={`/book-room/${product.id}`} >
 												<Card.Img
 													variant="top"
-													src={`data:image/png;base64, ${product.image}`}
-													alt="Room Photo"
+													src={`data:image/png;base64, ${product.realimage}`}
+													alt="Product Photo"
 													className="w-100"
 													style={{ height: "200px" }}
 												/>

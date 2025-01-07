@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
 							<Card.Img
 								variant="top"
 								src={`data:image/png;base64, ${product.realimage}`}
-								alt="Room Photo"
+								alt="Product Photo"
 								style={{ width: "100%", maxWidth: "200px", height: "auto" }}
 							/>
 					
