@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const api=axios.create({
-    baseURL:"http://localhost:8083"
+    baseURL:"http://localhost:8084"
 })
 /*function add new room to the database*/
 
@@ -45,16 +45,25 @@ export async function updateProduct(productId, productData) {
   return response.data;
 }
 
-
 export async function getProductImageById(productId) {
-  try {
-    const result = await axios.get(`/api/products/${productId}/image`);
-    return result.data; // This will be the base64 string
-  } catch (error) {
-    console.error('Error fetching product image:', error);
-    throw new Error('Error fetching product image');
+	try {
+		
+const url = `http://localhost:8084/products/${productId}/image`;
+	  const result = await axios.get(url);
+	  
+	  // Log the entire result to see the response structure
+	  console.log('Product image response:', result);
+	  
+	  // Log just the base64 image data to see the image data string
+	  console.log('Base64 image data:', result.data);
+	  
+	  return result.data; // This will be the base64 string
+	} catch (error) {
+	  console.error('Error fetching product image:', error);
+	  throw new Error('Error fetching product image');
+	}
   }
-}
+  
 
 
 export async function getProductById(productId) {
