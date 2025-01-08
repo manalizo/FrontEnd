@@ -11,17 +11,26 @@ import "/node_modules/bootstrap/dist/js/bootstrap.min.js"
 import "/node_modules/bootstrap/dist/css/bootstrap.min.css"
 import AddProduct from "./components/product/AddProduct"
 import Home from './components/home/Home'
-import ExistingRooms from './components/product/ExistingProduct'
+
+
+import Admin from './components/admin/Admin'
+import CommandeSuccess from "./components/Order/CommandeSuccess"
+import Checkout from "./components/Order/Checkout"
+import Commandes from "./components/Order/Commandes" // Updated component name
+import FindCommande from "./components/Order/FindCommande" // Updated component name
+
+
+
+
+import ExistingProduct from './components/product/ExistingProduct'
 import { Routes, Route } from "react-router-dom"
 import EditRoom from './components/product/EditProduct'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
-import RoomListing from "./components/product/ProductListing"
-import Admin from './components/admin/Admin'
-import BookingSuccess from "./components/Order/BookingSuccess"
-import Checkout from "./components/Order/Checkout"
-import Bookings from "./components/Order/Bookings"
-import FindBooking from "./components/Order/FindBooking"
+import ProductListing from "./components/product/ProductListing"
+
+
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -32,18 +41,23 @@ function App() {
     <NavBar/>
       
         <Routes>
-        
-        <Route path="/browse-all-rooms" element={<RoomListing />} /> 
-          <Route path="/existing-rooms"  exact element={<ExistingRooms/>}/>
+        <Route path="/commande-success" element={<CommandeSuccess />} />
+     
+        <Route path="/existing-commandes" exact element={<Commandes/>}/>
+        <Route path="/find-commande" element={<FindCommande />} />
+        <Route path="/" exact element={<Home/>}></Route>
+
+
+        <Route path="/browse-all-products" element={<ProductListing />} /> 
+          <Route path="/existing-products"  exact element={<ExistingProduct/>}/>
           <Route path="/add-product"  exact element={<AddProduct/>}/>
           <Route path="/edit-room/:roomId"  exact element={<EditRoom/>}/>
           <Route path="/admin"  exact element={<Admin/>}/>
-          <Route path="/booking-success" element={<BookingSuccess />} />
+     
 						<Route path="/book-room/:roomId" element={<Checkout />} />
 						
-         <Route path="/existing-bookings" exact element={<Bookings/>}/>
-         <Route path="/find-booking" element={<FindBooking />} />
-     
+         <Route path="/existing-commandes" exact element={<Commandes/>}/>
+   
         
         <Route path="/"  exact element={<Home/>}></Route>
         </Routes>

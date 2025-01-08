@@ -1,37 +1,33 @@
-
-import BookingForm from "./BookingRoomForm"
+import CommandeForm from "./CommandeForm"
 import React, { useEffect, useState } from "react"
-import BookingRoomForm from "../Order/BookingRoomForm"
 import {
-	FaUtensils,
-	FaWifi,
-	FaTv,
-	FaWineGlassAlt,
-	FaParking,
-	FaCar,
+	FaBox,
+	FaTruck,
+	FaMoneyBillAlt,
 	FaTshirt
 } from "react-icons/fa"
 
 import { useParams } from "react-router-dom"
-import { getRoomById } from "../utils/ApiFunctions"
+import { getCommandeById } from "../utils/ApiFunctions"
 import RoomCarousel from "../common/RoomCarousel"
 
-const Checkout = () => {
+const CommandeCheckout = () => {
 	const [error, setError] = useState(null)
 	const [isLoading, setIsLoading] = useState(true)
-	const [roomInfo, setRoomInfo] = useState({
-		photo: "",
-		roomType: "",
-		roomPrice: ""
+	const [commandeInfo, setCommandeInfo] = useState({
+		image: "",
+		productName: "",
+		productPrice: "",
+		quantity: "",
 	})
 
-	const { roomId } = useParams()
+	const { commandeId } = useParams()
 
 	useEffect(() => {
 		setTimeout(() => {
-			getRoomById(roomId)
+			getCommandeById(commandeId)
 				.then((response) => {
-					setRoomInfo(response)
+					setCommandeInfo(response)
 					setIsLoading(false)
 				})
 				.catch((error) => {
@@ -39,7 +35,7 @@ const Checkout = () => {
 					setIsLoading(false)
 				})
 		}, 1000)
-	}, [roomId])
+	}, [commandeId])
 
 	return (
 		<div>
@@ -47,48 +43,46 @@ const Checkout = () => {
 				<div className="row">
 					<div className="col-md-4 mt-5 mb-5">
 						{isLoading ? (
-							<p>Loading room information...</p>
+							<p>Loading order information...</p>
 						) : error ? (
 							<p>{error}</p>
 						) : (
-							<div className="room-info">
+							<div className="commande-info">
 								<img
-									src={`data:image/png;base64,${roomInfo.photo}`}
-									alt="Room photo"
+									src={`data:image/png;base64,${commandeInfo.image}`}
+									alt="Product photo"
 									style={{ width: "100%", height: "200px" }}
 								/>
 								<table className="table table-bordered">
 									<tbody>
 										<tr>
-											<th>Room Type:</th>
-											<td>{roomInfo.roomType}</td>
+											<th>Product Name:</th>
+											<td>{commandeInfo.productName}</td>
 										</tr>
 										<tr>
-											<th>Price per night:</th>
-											<td>${roomInfo.roomPrice}</td>
+											<th>Price per unit:</th>
+											<td>${commandeInfo.productPrice}</td>
 										</tr>
 										<tr>
-											<th>Room Service:</th>
+											<th>Quantity:</th>
+											<td>{commandeInfo.quantity}</td>
+										</tr>
+										<tr>
+											<th>Total:</th>
+											<td>${commandeInfo.productPrice * commandeInfo.quantity}</td>
+										</tr>
+										<tr>
+											<th>Shipping Info:</th>
 											<td>
 												<ul className="list-unstyled">
 													<li>
-														<FaWifi /> Wifi
+														<FaTruck /> Free Shipping
 													</li>
 													<li>
-														<FaTv /> Netfilx Premium
+														<FaMoneyBillAlt /> Cash on Delivery
 													</li>
 													<li>
-														<FaUtensils /> Breakfast
-													</li>
-												
-													<li>
-														<FaCar /> Car Service
-													</li>
-													<li>
-														<FaParking /> Parking Space
-													</li>
-													<li>
-														<FaTshirt /> Laundry
+														<FaTshirt /> Gift Wrapping Available
 													</li>
 												</ul>
 											</td>
@@ -99,7 +93,7 @@ const Checkout = () => {
 						)}
 					</div>
 					<div className="col-md-8">
-						<BookingRoomForm />
+						<CommandeForm />
 					</div>
 				</div>
 			</section>
@@ -109,4 +103,4 @@ const Checkout = () => {
 		</div>
 	)
 }
-export default Checkout
+export default CommandeCheckout

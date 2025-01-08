@@ -75,6 +75,17 @@ export async function getProductById(productId) {
   }
 }
 
+export async function addCommande(description, quantite, date, montant,productid) {
+    const formData = new FormData();
+    formData.append("description", description);
+    formData.append("quantite", quantite);
+    formData.append("date", date);
+    formData.append("montant", montant);
+	formData.append("productid", productid);
+
+    const response = await api.post('/commandes', formData);
+    return response.data;
+}
 
 
 
@@ -108,6 +119,34 @@ export async function addRoom(photo,roomType,roomPrice){
     }
     
 }
+
+
+export async function deleteCommande(commandeId) {
+    const response = await api.delete(`/commandes/delete/${commandeId}`);
+    return response.data;
+}
+
+export async function updateCommande(commandeId, commandeData) {
+    const response = await api.put(`/commandes/${commandeId}`, commandeData);
+    return response.data;
+}
+
+export async function getAllCommandes() {
+    const response = await api.get('/commandes');
+    return response.data;
+}
+export async function getCommandeById(commandeId) {
+    const response = await api.get(`/commandes/${commandeId}`);
+    return response.data;
+}
+
+
+
+
+
+
+
+
 
 
 /* This function gets all rooms from the database */
