@@ -54,7 +54,7 @@ function App() {
           <Route path="/edit-room/:roomId"  exact element={<EditRoom/>}/>
           <Route path="/admin"  exact element={<Admin/>}/>
      
-						<Route path="/book-room/:roomId" element={<Checkout />} />
+						<Route path="/commande-product/:productId" element={<Checkout />} />
 						
          <Route path="/existing-commandes" exact element={<Commandes/>}/>
    

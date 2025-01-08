@@ -9,7 +9,7 @@ import {
 
 import { useParams } from "react-router-dom"
 import { getCommandeById } from "../utils/ApiFunctions"
-import RoomCarousel from "../common/RoomCarousel"
+import Productarousel from "../common/ProductCarousel"
 
 const CommandeCheckout = () => {
 	const [error, setError] = useState(null)
@@ -98,7 +98,8 @@ const CommandeCheckout = () => {
 				</div>
 			</section>
 			<div className="container">
-				<RoomCarousel />
+				 {/* <Productarousel/> */}
+			
 			</div>
 		</div>
 	)

@@ -83,7 +83,7 @@ export async function addCommande(description, quantite, date, montant,productid
     formData.append("montant", montant);
 	formData.append("productid", productid);
 
-    const response = await api.post('/commandes', formData);
+    const response = await api.post('/commandes/create', formData);
     return response.data;
 }
 

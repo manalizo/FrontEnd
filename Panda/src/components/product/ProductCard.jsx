@@ -9,7 +9,7 @@ const ProductCard = ({ product }) => {
 			<Card>
 				<Card.Body className="d-flex flex-wrap align-items-center">
 					<div className="flex-shrrink-0 mr-3 mb-3 mb-md-0">
-						<Link to={`/book-room/${product.id}`}>
+						<Link to={`/commande-product/${product.id}`}>
 						
 							<Card.Img
 								variant="top"
