@@ -9,25 +9,25 @@ import {
 
 import { useParams } from "react-router-dom"
 import { getCommandeById } from "../utils/ApiFunctions"
-import Productarousel from "../common/ProductCarousel"
-
-const CommandeCheckout = () => {
+import ProductCarousel from "../common/ProductCarousel"
+import {getProductById} from "../utils/ApiFunctions"
+const Checkout = () => {
 	const [error, setError] = useState(null)
 	const [isLoading, setIsLoading] = useState(true)
-	const [commandeInfo, setCommandeInfo] = useState({
+	const [productInfo, setProductInfo] = useState({
 		image: "",
-		productName: "",
-		productPrice: "",
-		quantity: "",
+		titre: "",
+		prix: "",
+		description: "",
 	})
 
-	const { commandeId } = useParams()
+	const { productId } = useParams()
 
 	useEffect(() => {
 		setTimeout(() => {
-			getCommandeById(commandeId)
+			getProductById(productId)
 				.then((response) => {
-					setCommandeInfo(response)
+					setProductInfo(response)
 					setIsLoading(false)
 				})
 				.catch((error) => {
@@ -35,7 +35,7 @@ const CommandeCheckout = () => {
 					setIsLoading(false)
 				})
 		}, 1000)
-	}, [commandeId])
+	}, [productId])
 
 	return (
 		<div>
@@ -47,9 +47,9 @@ const CommandeCheckout = () => {
 						) : error ? (
 							<p>{error}</p>
 						) : (
-							<div className="commande-info">
+							<div className="room-info">
 								<img
-									src={`data:image/png;base64,${commandeInfo.image}`}
+									src={`data:image/png;base64,${productInfo.image}`}
 									alt="Product photo"
 									style={{ width: "100%", height: "200px" }}
 								/>
@@ -57,20 +57,17 @@ const CommandeCheckout = () => {
 									<tbody>
 										<tr>
 											<th>Product Name:</th>
-											<td>{commandeInfo.productName}</td>
+											<td>{productInfo.titre}</td>
 										</tr>
 										<tr>
 											<th>Price per unit:</th>
-											<td>${commandeInfo.productPrice}</td>
+											<td>${productInfo.prix}</td>
 										</tr>
 										<tr>
-											<th>Quantity:</th>
-											<td>{commandeInfo.quantity}</td>
+											<th>Description:</th>
+											<td>{productInfo.description}</td>
 										</tr>
-										<tr>
-											<th>Total:</th>
-											<td>${commandeInfo.productPrice * commandeInfo.quantity}</td>
-										</tr>
+									
 										<tr>
 											<th>Shipping Info:</th>
 											<td>
@@ -98,10 +95,10 @@ const CommandeCheckout = () => {
 				</div>
 			</section>
 			<div className="container">
-				 {/* <Productarousel/> */}
+				  <ProductCarousel/> 
 			
 			</div>
 		</div>
 	)
 }
-export default CommandeCheckout
+export default Checkout

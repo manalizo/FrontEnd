@@ -7,39 +7,6 @@ const Productarousel = () => {
 	const [products, setProducts] = useState([{ id: "", titre: "", prix: "", image: "" }])
 	const [errorMessage, setErrorMessage] = useState("")
 	const [isLoading, setIsLoading] = useState(false)
-	useEffect(() => {
-		const fetchProducts = async () => {
-		  setIsLoading(true)
-	
-		  try {
-			const products = await getAllProducts()
-	
-			// Fetch image for each product
-			const productsWithImages = await Promise.all(
-			  products.map(async (product) => {
-				const realimage = await getProductImageById(product.id) // Fetch image for each product
-				return { ...product, realimage } // Add the image to the product object
-			  })
-			)
-	
-			setData(productsWithImages) // Save processed products with image in state
-			setIsLoading(false)
-		  } catch (error) {
-			setError(error.message)
-			setIsLoading(false)
-		  }
-		}
-	
-		fetchProducts()
-	  }, [])
-	
-	  if (isLoading) {
-		return <div>Loading products.....</div>
-	  }
-	
-	  if (error) {
-		return <div className="text-danger">Error: {error}</div>
-	  }
 
 	useEffect(() => {
 		setIsLoading(true)
@@ -75,7 +42,7 @@ const Productarousel = () => {
 								{products.slice(index * 4, index * 4 + 4).map((product) => (
 									<Col key={product.id} className="mb-4" xs={12} md={6} lg={3}>
 										<Card>
-										<Link to={`/commande-product/${product.id}`} >
+										<Link to={`/book-room/${product.id}`} >
 												<Card.Img
 													variant="top"
 													src={`data:image/png;base64, ${product.realimage}`}
@@ -88,7 +55,7 @@ const Productarousel = () => {
 												<Card.Title className="hotel-color">{product.titre}</Card.Title>
 												<Card.Title className="room-price">${product.prix}</Card.Title>
 												<div className="flex-shrink-0">
-													<Link to={`/commande-product/${product.id}`} className="btn btn-hotel btn-sm">
+													<Link to={`/book-room/${product.id}`} className="btn btn-hotel btn-sm">
 														Buy Now
 													</Link>
 												</div>

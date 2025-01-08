@@ -66,14 +66,13 @@ const url = `http://localhost:8084/products/${productId}/image`;
   
 
 
+
 export async function getProductById(productId) {
-  try {
-    const result = await api.get(`/products/${productId}`);
-    return result.data;
-  } catch (error) {
-    throw new Error('Error fetching product');
-  }
+    const response = await api.get(`/products/${productId}`);
+    return response.data;
 }
+
+
 
 export async function addCommande(description, quantite, date, montant,productid) {
     const formData = new FormData();
@@ -283,3 +282,5 @@ export async function getAllBookings() {
 	} catch (error) {
 		throw new Error("Error fetching rooms")
 	}}
+
+	
