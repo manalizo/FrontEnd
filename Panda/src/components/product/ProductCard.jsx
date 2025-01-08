@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
 						<Card.Text>{product.description}</Card.Text>
 					</div>
 					<div className="flex-shrink-0 mt-3">
-						<Link to={`/book-room/${product.id}`} className="btn btn-hotel btn-sm">
+						<Link to={`/commande-product/${product.id}`} className="btn btn-hotel btn-sm">
 							Buy Now
 						</Link>
 					</div>
