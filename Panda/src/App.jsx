@@ -20,8 +20,12 @@ import Commandes from "./components/Order/Commandes" // Updated component name
 import FindCommande from "./components/Order/FindCommande" // Updated component name
 
 
+import {AuthProvider} from './components/auth/AuthContext';
 
+import Login from './components/auth/Login'
+import Registre from './components/auth/Registre'
 
+Registre
 import ExistingProduct from './components/product/ExistingProduct'
 import { Routes, Route } from "react-router-dom"
 import EditRoom from './components/product/EditProduct'
@@ -36,11 +40,14 @@ function App() {
 
   return (
     
-      
+    <AuthProvider>
     <main>
     <NavBar/>
       
         <Routes>
+
+        <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Registre />} />
         <Route path="/commande-success" element={<CommandeSuccess />} />
      
         <Route path="/existing-commandes" exact element={<Commandes/>}/>
@@ -65,7 +72,7 @@ function App() {
       <Footer/>
     </main>
    
-
+    </AuthProvider>
       
     
   )
