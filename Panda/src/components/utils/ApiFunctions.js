@@ -3,6 +3,9 @@ import axios from "axios";
 export const api = axios.create({
     baseURL: "http://localhost:8084",
 });
+export const apiurl = axios.create({
+    baseURL: "http://localhost:8088",
+});
 
 /* Gestion des produits */
 export async function getAllProducts() {
@@ -94,11 +97,10 @@ export async function getCommandeById(commandeId) {
 
 /* Gestion des utilisateurs (Authentification) */
 // Fonction pour enregistrer un utilisateur
-export async function registerUser(username, email, password) {
+export async function registerUser(username, password) {
     try {
-        const response = await api.post("/auth/register", {
+        const response = await apiurl.post("/auth/register", {
             username,
-            email,
             password,
         });
         return response.data;
@@ -112,7 +114,7 @@ export async function registerUser(username, email, password) {
 // Fonction pour connecter un utilisateur
 export async function loginUser(username, password) {
     try {
-        const response = await api.post("/auth/login", {
+        const response = await apiurl.post("/auth/login", {
             username,
             password,
         });
