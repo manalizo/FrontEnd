@@ -37,7 +37,7 @@ const ExistingProducts = () => {
     try {
       const result = await deleteProduct(productId);
       if (result === "") {
-        setSuccessMessage(`Room No ${productId} was deleted`);
+        setSuccessMessage(`Product No ${productId} was deleted`);
         fetchRooms();
       } else {
         console.error(`Error deleting room : ${result.message}`);

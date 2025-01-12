@@ -28,7 +28,7 @@ export async function addProduct(titre, description, image, prix) {
 }
 
 export async function deleteProduct(productId) {
-    const response = await api.delete(`/products/${productId}`);
+    const response = await api.delete(`/products/delete/${productId}`);
     return response.data;
 }
 
@@ -45,7 +45,7 @@ export async function getProductById(productId) {
 export async function getProductImageById(productId) {
     try {
 
-const url = "http://localhost:8084/products/${productId}/image";
+const url = `http://localhost:8084/products/${productId}/image`;
       const result = await axios.get(url);
 
       // Log the entire result to see the response structure
