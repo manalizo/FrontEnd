@@ -16,6 +16,18 @@ export async function getAllProducts() {
         throw new Error("Error fetching products");
     }
 }
+export async function editProduct(productId, titre, description, image, prix) {
+    const formData = new FormData();
+    formData.append("titre", titre);
+    formData.append("description", description);
+    if (image) {
+        formData.append("image", image); // Ajouter uniquement si une nouvelle image est fournie
+    }
+    formData.append("prix", prix);
+
+    const response = await api.put(`/products/${productId}`, formData); // Envoie une requête PUT pour mettre à jour le produit
+    return response.data;
+}
 
 export async function addProduct(titre, description, image, prix) {
     const formData = new FormData();
@@ -33,8 +45,9 @@ export async function deleteProduct(productId) {
 }
 
 export async function updateProduct(productId, productData) {
-    const response = await api.put(`/products/${productId}`, productData);
-    return response.data;
+    const url = `http://localhost:8084/products/${productId}`;
+      const result = await axios.put(url);
+      return response.data;
 }
 
 export async function getProductById(productId) {

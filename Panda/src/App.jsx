@@ -28,7 +28,7 @@ import Registre from './components/auth/Registre'
 Registre
 import ExistingProduct from './components/product/ExistingProduct'
 import { Routes, Route } from "react-router-dom"
-import EditRoom from './components/product/EditProduct'
+import EditProduct from './components/product/EditProduct'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
 import ProductListing from "./components/product/ProductListing"
@@ -58,7 +58,7 @@ function App() {
         <Route path="/browse-all-products" element={<ProductListing />} /> 
           <Route path="/existing-products"  exact element={<ExistingProduct/>}/>
           <Route path="/add-product"  exact element={<AddProduct/>}/>
-          <Route path="/edit-room/:roomId"  exact element={<EditRoom/>}/>
+          <Route path="/edit-product/:productId"  exact element={<EditProduct/>}/>
           <Route path="/admin"  exact element={<Admin/>}/>
      
 						<Route path="/commande-product/:productId" element={<Checkout />} />
