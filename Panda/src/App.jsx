@@ -25,7 +25,7 @@ import {AuthProvider} from './components/auth/AuthContext';
 import Login from './components/auth/Login'
 import Registre from './components/auth/Registre'
 
-Registre
+
 import ExistingProduct from './components/product/ExistingProduct'
 import { Routes, Route } from "react-router-dom"
 import EditProduct from './components/product/EditProduct'

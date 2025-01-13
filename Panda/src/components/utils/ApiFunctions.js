@@ -40,13 +40,21 @@ export async function addProduct(titre, description, image, prix) {
 }
 
 export async function deleteProduct(productId) {
-    const response = await api.delete(`/products/delete/${productId}`);
-    return response.data;
+    try {
+      /*  const response = await api.delete(`/products/${productId}`);*/
+        const url = `http://localhost:8083/products/${productId}`;
+      const result = await axios.delete(url);
+       
+    } catch (error) {
+        console.error('Failed to delete product:', error.response?.data || error.message);
+        throw error;
+    }
 }
 
+
 export async function updateProduct(productId, productData) {
-    const url = `http://localhost:8084/products/${productId}`;
-      const result = await axios.put(url);
+    const url = `http://localhost:8083/products/${productId}`;
+      const result = await axios.put(url,productData);
       return response.data;
 }
 
