@@ -20,10 +20,6 @@ import Commandes from "./components/Order/Commandes" // Updated component name
 import FindCommande from "./components/Order/FindCommande" // Updated component name
 
 
-import {AuthProvider} from './components/auth/AuthContext';
-
-import Login from './components/auth/Login'
-import Registre from './components/auth/Registre'
 
 
 import ExistingProduct from './components/product/ExistingProduct'
@@ -33,7 +29,11 @@ import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
 import ProductListing from "./components/product/ProductListing"
 
-
+import Login from "./components/auth/Login"
+import Registration from "./components/auth/Registration"
+import Profile from "./components/auth/Profile"
+import { AuthProvider } from "./components/auth/AuthProvider"
+import RequireAuth from "./components/auth/RequireAuth"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -46,8 +46,8 @@ function App() {
       
         <Routes>
 
-        <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Registre />} />
+    
+                
         <Route path="/commande-success" element={<CommandeSuccess />} />
      
         <Route path="/existing-commandes" exact element={<Commandes/>}/>
@@ -64,7 +64,10 @@ function App() {
 						<Route path="/commande-product/:productId" element={<Checkout />} />
 						
          <Route path="/existing-commandes" exact element={<Commandes/>}/>
-   
+         <Route path="/login" element={<Login />} />
+						<Route path="/register" element={<Registration />} />
+
+						<Route path="/profile" element={<Profile />} />
         
         <Route path="/"  exact element={<Home/>}></Route>
         </Routes>
