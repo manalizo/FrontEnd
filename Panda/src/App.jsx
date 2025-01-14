@@ -61,7 +61,12 @@ function App() {
           <Route path="/edit-product/:productId"  exact element={<EditProduct/>}/>
           <Route path="/admin"  exact element={<Admin/>}/>
      
-						<Route path="/commande-product/:productId" element={<Checkout />} />
+						<Route path="/commande-product/:productId" 
+            element={
+              <RequireAuth>
+                <Checkout />
+              </RequireAuth>
+            } />
 						
          <Route path="/existing-commandes" exact element={<Commandes/>}/>
          <Route path="/login" element={<Login />} />

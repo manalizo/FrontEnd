@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import React from "react";
+import { useAuth } from "../auth/AuthProvider"; // Import Auth context
+import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // For navigation after logout
 
+const NavBar = () => {
+  const { user, handleLogout } = useAuth(); // Access authentication state
+  const navigate = useNavigate();
 
-function NavBar() {
-
-  const handleLogout = () => {
-    logout(); // Appelle la fonction de déconnexion depuis le contexte d'authentification
+  // Logout function
+  const logout = () => {
+    handleLogout(); // Call the logout function from context
+    navigate("/login"); // Redirect to login page after logging out
   };
 
   return (
@@ -21,25 +23,27 @@ function NavBar() {
             <Nav.Link href="/browse-all-products">Products</Nav.Link>
 
             <NavDropdown title="Account" id="basic-nav-dropdown">
-             
+              {/* If user is authenticated, show account options */}
+              {user ? (
                 <>
-                  <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
-                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                  {user.roles.includes("ADMIN") && (
+                    <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
+                  )}
+                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
                 </>
-             
+              ) : (
                 <>
+                  {/* If not authenticated, show login/register options */}
                   <NavDropdown.Item href="/register">Register</NavDropdown.Item>
                   <NavDropdown.Item href="/login">Login</NavDropdown.Item>
                 </>
-            
+              )}
             </NavDropdown>
-
-            
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-}
+};
 
 export default NavBar;
