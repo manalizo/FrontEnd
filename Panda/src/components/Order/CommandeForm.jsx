@@ -1,21 +1,45 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Form, FormControl, Button } from "react-bootstrap";
-import { addCommande } from "../utils/ApiFunctions"; // Assuming the API function is set up
-import { useNavigate } from "react-router-dom";
+import { addCommande, getProductById } from "../utils/ApiFunctions"; // Assuming getProductById is set up
+import { useNavigate, useParams } from "react-router-dom";
+import CommandeSummary from "./CommandeSummary"; // Import CommandeSummary component
 
 const CommandeForm = () => {
     const [validated, setValidated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const { productId } = useParams();
     const [commande, setCommande] = useState({
         description: "",
         quantite: "",
         montant: 0,
-        productid: "", // Assuming the product ID is passed from another component
+        productid: productId, // Assuming the product ID is passed as a param
+        date: new Date(), // Add the current date for the summary
     });
+    const [product, setProduct] = useState(null);
+    const [payment, setPayment] = useState(0); // Store the payment amount after calculation
 
     const navigate = useNavigate();
+
+    // Fetch product details
+    useEffect(() => {
+        const fetchProductDetails = async () => {
+            try {
+                const productData = await getProductById(productId);
+                setProduct(productData);
+                setCommande({
+                    ...commande,
+                    description: productData.description, // Set description from fetched product
+                });
+                setPayment(productData.prix || 0); // Set the price to be used for payment calculation
+            } catch (error) {
+                setErrorMessage("Error fetching product details");
+                console.error(error);
+            }
+        };
+
+        fetchProductDetails();
+    }, [productId]); // Run when productid changes
 
     // Handle input change for form fields
     const handleInputChange = (e) => {
@@ -24,38 +48,47 @@ const CommandeForm = () => {
         setErrorMessage(""); // Clear error messages when typing
     };
 
-    // Calculate the total amount based on quantity and fixed price
+    // Calculate the total amount based on quantity and price fetched from product
     const calculateTotalAmount = () => {
-        const pricePerItem = 50; // Example fixed price per product
+        const pricePerItem = product?.prix || 0; // Get price from product or default to 0
         return commande.quantite * pricePerItem;
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-    
+
         if (form.checkValidity() === false || commande.quantite < 1 || commande.description.trim() === "") {
             e.stopPropagation();
             setErrorMessage("Please ensure all fields are correctly filled.");
         } else {
             setValidated(true);
-            try {
-                const response = await addCommande(
-                    commande.description,
-                    commande.quantite,
-                    calculateTotalAmount(),
-                    commande.productid
-                );
-                setIsSubmitted(true);
-                navigate("/commande-success", { state: { message: response.confirmationCode } });
-            } catch (error) {
-                console.error(error);  // Log full error for inspection
-                setErrorMessage(
-                    error.response?.data?.message || "An error occurred while submitting the form."
-                );
-            }
+            setIsSubmitted(true); // Set form as submitted but don't proceed to success page yet
         }
     };
-    
+
+    // Confirm order and proceed to success page
+    const handleConfirmOrder = async () => {
+        try {
+            const response = await addCommande(
+                commande.description,
+                commande.quantite,
+                calculateTotalAmount(),
+                commande.productid
+            );
+            navigate("/commande-success", { state: { message: response.confirmationCode } });
+        } catch (error) {
+            console.error(error); // Log full error for inspection
+            setErrorMessage(
+                error.response?.data?.message || "An error occurred while submitting the form."
+            );
+        }
+    };
+
+    if (!product) {
+        return <div>Loading...</div>; // Loading state while fetching product details
+    }
+
     return (
         <div className="container mb-5">
             <div className="row">
@@ -75,6 +108,7 @@ const CommandeForm = () => {
                                     value={commande.description}
                                     placeholder="Enter product description"
                                     onChange={handleInputChange}
+                                    disabled // Disable the description field as it's fetched from the product
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     Please enter a description for the order.
@@ -99,7 +133,6 @@ const CommandeForm = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-
                             {/* Product ID */}
                             <Form.Group>
                                 <Form.Label htmlFor="productid">Product ID</Form.Label>
@@ -111,6 +144,7 @@ const CommandeForm = () => {
                                     value={commande.productid}
                                     placeholder="Enter product ID"
                                     onChange={handleInputChange}
+                                    disabled
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     Please enter a valid product ID.
@@ -129,16 +163,15 @@ const CommandeForm = () => {
                     </div>
                 </div>
 
-                <div className="col-md-4">
+                {/* Commande Summary: Pass the data to CommandeSummary */}
+                <div className="col-md-8">
                     {isSubmitted && (
-                        <div>
-                            <h5>Summary:</h5>
-                            <p>Description: {commande.description}</p>
-                            <p>Quantity: {commande.quantite}</p>
-                            <p>Total Amount: ${calculateTotalAmount()}</p>
-                            <p>Date: {commande.date}</p>
-                            <p>Product ID: {commande.productid}</p>
-                        </div>
+                        <CommandeSummary
+                            commande={commande}
+                            payment={calculateTotalAmount()}
+                            isFormValid={validated}
+                            onConfirm={handleConfirmOrder} // Pass the handleConfirmOrder method
+                        />
                     )}
                 </div>
             </div>
