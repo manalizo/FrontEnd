@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import moment from "moment";
+import React, { useState } from "react";
+
 import { Form, FormControl, Button } from "react-bootstrap";
-import { addCommande } from "../utils/ApiFunctions";  // Assuming the API function is already set up
+import { addCommande } from "../utils/ApiFunctions"; // Assuming the API function is set up
 import { useNavigate } from "react-router-dom";
 
 const CommandeForm = () => {
@@ -12,7 +12,7 @@ const CommandeForm = () => {
         description: "",
         quantite: "",
         montant: 0,
-        date: moment().format("YYYY-MM-DD"), // Default to current date
+        productid: "", // Assuming the product ID is passed from another component
     });
 
     const navigate = useNavigate();
@@ -21,39 +21,41 @@ const CommandeForm = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCommande({ ...commande, [name]: value });
-        setErrorMessage("");  // Clear error messages when typing
+        setErrorMessage(""); // Clear error messages when typing
     };
 
-    // Calculate the total amount (or price) based on quantity and some fixed price
+    // Calculate the total amount based on quantity and fixed price
     const calculateTotalAmount = () => {
-        const pricePerItem = 50; // Example fixed price per product (could be fetched from an API)
+        const pricePerItem = 50; // Example fixed price per product
         return commande.quantite * pricePerItem;
     };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
+    
         if (form.checkValidity() === false || commande.quantite < 1 || commande.description.trim() === "") {
             e.stopPropagation();
             setErrorMessage("Please ensure all fields are correctly filled.");
         } else {
-            setIsSubmitted(true);
+            setValidated(true);
+            try {
+                const response = await addCommande(
+                    commande.description,
+                    commande.quantite,
+                    calculateTotalAmount(),
+                    commande.productid
+                );
+                setIsSubmitted(true);
+                navigate("/commande-success", { state: { message: response.confirmationCode } });
+            } catch (error) {
+                console.error(error);  // Log full error for inspection
+                setErrorMessage(
+                    error.response?.data?.message || "An error occurred while submitting the form."
+                );
+            }
         }
-        setValidated(true);
     };
-
-    const handleFormSubmit = async () => {
-        try {
-            // API call to create a new Commande (order)
-            const response = await addCommande(commande);
-            setIsSubmitted(true);
-            navigate("/commande-success", { state: { message: response.confirmationCode } });
-        } catch (error) {
-            const errorMessage = error.message;
-            setErrorMessage(errorMessage);
-        }
-    };
-
+    
     return (
         <div className="container mb-5">
             <div className="row">
@@ -62,11 +64,9 @@ const CommandeForm = () => {
                         <h4 className="card-title">Create Commande</h4>
 
                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                            {/* Description of the product/order */}
+                            {/* Description */}
                             <Form.Group>
-                                <Form.Label htmlFor="description" className="hotel-color">
-                                    Product/Order Description
-                                </Form.Label>
+                                <Form.Label htmlFor="description">Product/Order Description</Form.Label>
                                 <FormControl
                                     required
                                     type="text"
@@ -81,11 +81,9 @@ const CommandeForm = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            {/* Quantity of the product */}
+                            {/* Quantity */}
                             <Form.Group>
-                                <Form.Label htmlFor="quantite" className="hotel-color">
-                                    Quantity
-                                </Form.Label>
+                                <Form.Label htmlFor="quantite">Quantity</Form.Label>
                                 <FormControl
                                     required
                                     type="number"
@@ -97,35 +95,35 @@ const CommandeForm = () => {
                                     onChange={handleInputChange}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    Please select at least 1 item.
+                                    Please enter a valid quantity.
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            {/* Date of the order */}
+
+                            {/* Product ID */}
                             <Form.Group>
-                                <Form.Label htmlFor="date" className="hotel-color">
-                                    Order Date
-                                </Form.Label>
+                                <Form.Label htmlFor="productid">Product ID</Form.Label>
                                 <FormControl
                                     required
-                                    type="date"
-                                    id="date"
-                                    name="date"
-                                    value={commande.date}
+                                    type="text"
+                                    id="productid"
+                                    name="productid"
+                                    value={commande.productid}
+                                    placeholder="Enter product ID"
                                     onChange={handleInputChange}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    Please select a valid order date.
+                                    Please enter a valid product ID.
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            {/* Displaying error messages */}
+                            {/* Error Message */}
                             {errorMessage && <p className="error-message text-danger">{errorMessage}</p>}
 
-                            <div className="fom-group mt-2 mb-2">
-                                <button type="submit" className="btn btn-hotel">
+                            <div className="form-group mt-2 mb-2">
+                                <Button type="submit" className="btn btn-primary">
                                     Continue
-                                </button>
+                                </Button>
                             </div>
                         </Form>
                     </div>
@@ -138,7 +136,8 @@ const CommandeForm = () => {
                             <p>Description: {commande.description}</p>
                             <p>Quantity: {commande.quantite}</p>
                             <p>Total Amount: ${calculateTotalAmount()}</p>
-                            <Button onClick={handleFormSubmit} className="btn btn-primary">Confirm Order</Button>
+                            <p>Date: {commande.date}</p>
+                            <p>Product ID: {commande.productid}</p>
                         </div>
                     )}
                 </div>

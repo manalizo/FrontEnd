@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import moment from "moment";
 export const api = axios.create({
     baseURL: "http://localhost:8084",
 });
@@ -89,14 +89,14 @@ const url = `http://localhost:8084/products/${productId}/image`;
       throw new Error('Error fetching product image');
     }
   }
-
+ 
 
 /* Gestion des commandes */
-export async function addCommande(description, quantite, date, montant, productid) {
+export async function addCommande(description, quantite, montant, productid) {
     const formData = new FormData();
     formData.append("description", description);
     formData.append("quantite", quantite);
-    formData.append("date", date);
+    formData.append("date", moment().format("YYYY-MM-DD"));
     formData.append("montant", montant);
     formData.append("productid", productid);
 
@@ -159,7 +159,9 @@ export async function loginUser(login) {
 /*  This is function to get the user profile */
 export async function getUserProfile(userId, token) {
 	try {
-		const response = await api.get(`users/profile/${userId}`, {
+        const url = `http://localhost:8088/auth/users/profile/${userId}`;
+        const response = await axios.post(url,{
+		//const response = await api.get(`users/profile/${userId}`, {
 			headers: getHeader()
 		})
 		return response.data
@@ -197,69 +199,3 @@ export async function getUser(userId, token) {
 
 
 
-
-
-export async function bookRoom(roomId, booking) {
-    try {
-        const response = await api.post(`/bookings/room/${roomId}/booking`, booking);
-        return response.data;
-    } catch (error) {
-        if (error.response && error.response.data) {
-            throw new Error(error.response.data);
-        } else {
-            throw new Error(`Error booking room : ${error.message}`);
-        }
-    }
-}
-
-/* Gestion des tables */
-export async function addDiningTable(Name, numberOfGuests, Location) {
-    const formData = new FormData();
-    formData.append("Name", Name);
-    formData.append("numberOfGuests", numberOfGuests);
-    formData.append("Location", Location);
-
-    const response = await api.post("/tables/add/new-table", formData);
-    if (response.status === 201) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-export async function getAllTables() {
-    try {
-        const result = await api.get("/tables/all-tables");
-        return result.data;
-    } catch (error) {
-        throw new Error("Error fetching rooms");
-    }
-}
-
-export async function deleteTable(tableId) {
-    try {
-        const result = await api.delete(`/tables/delete/table/${tableId}`);
-        return result.data;
-    } catch (error) {
-        throw new Error(`Error deleting table ${error.message}`);
-    }
-}
-
-export async function upadateTable(tableId, tableData) {
-    const formData = new FormData();
-    formData.append("Name", tableData.Name);
-    formData.append("numberOfGuests", tableData.numberOfGuests);
-    formData.append("Location", tableData.Location);
-
-    const response = await api.put(`/tables/update/${tableId}`, formData);
-    return response;
-}
-
-export async function getAllBookings() {
-    try {
-        const result = await api.get("/bookings/all-bookings");
-        return result.data;
-    } catch (error) {
-        throw new Error("Error fetching rooms");
-    }
-}
