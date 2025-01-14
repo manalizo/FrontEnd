@@ -3,6 +3,7 @@ import { Form, FormControl, Button } from "react-bootstrap";
 import { addCommande, getProductById } from "../utils/ApiFunctions"; // Assuming getProductById is set up
 import { useNavigate, useParams } from "react-router-dom";
 import CommandeSummary from "./CommandeSummary"; // Import CommandeSummary component
+import { useAuth } from "../auth/AuthProvider"; // Assuming AuthContext is used to fetch user data
 
 const CommandeForm = () => {
     const [validated, setValidated] = useState(false);
@@ -15,10 +16,12 @@ const CommandeForm = () => {
         montant: 0,
         productid: productId, // Assuming the product ID is passed as a param
         date: new Date(), // Add the current date for the summary
+        email: "", // Add email field to the state
     });
     const [product, setProduct] = useState(null);
     const [payment, setPayment] = useState(0); // Store the payment amount after calculation
 
+    const { user } = useAuth(); // Access the authenticated user
     const navigate = useNavigate();
 
     // Fetch product details
@@ -30,6 +33,7 @@ const CommandeForm = () => {
                 setCommande({
                     ...commande,
                     description: productData.description, // Set description from fetched product
+                    email: user?.email || "", // Set user email if authenticated
                 });
                 setPayment(productData.prix || 0); // Set the price to be used for payment calculation
             } catch (error) {
@@ -39,7 +43,7 @@ const CommandeForm = () => {
         };
 
         fetchProductDetails();
-    }, [productId]); // Run when productid changes
+    }, [productId, user]); // Run when productid or user changes
 
     // Handle input change for form fields
     const handleInputChange = (e) => {
@@ -74,7 +78,8 @@ const CommandeForm = () => {
                 commande.description,
                 commande.quantite,
                 calculateTotalAmount(),
-                commande.productid
+                commande.productid,
+                commande.email // Include the email in the API request
             );
             navigate("/commande-success", { state: { message: response.confirmationCode } });
         } catch (error) {

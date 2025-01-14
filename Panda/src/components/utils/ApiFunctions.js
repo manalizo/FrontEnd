@@ -92,13 +92,14 @@ const url = `http://localhost:8084/products/${productId}/image`;
  
 
 /* Gestion des commandes */
-export async function addCommande(description, quantite, montant, productid) {
+export async function addCommande(description, quantite, montant, productid,email) {
     const formData = new FormData();
     formData.append("description", description);
     formData.append("quantite", quantite);
     formData.append("date", moment().format("YYYY-MM-DD"));
     formData.append("montant", montant);
     formData.append("productid", productid);
+    formData.append("email", email);
 
     const response = await api.post("/commandes/create", formData);
     return response.data;

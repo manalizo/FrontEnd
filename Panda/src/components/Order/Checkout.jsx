@@ -1,45 +1,54 @@
-import React, { useEffect, useState } from "react"
-import { FaBox, FaTruck, FaMoneyBillAlt, FaTshirt } from "react-icons/fa"
-import { useParams } from "react-router-dom"
-import { getProductById, getProductImageById } from "../utils/ApiFunctions"
-import CommandeForm from "./CommandeForm"
-import ProductCarousel from "../common/ProductCarousel"
+import React, { useEffect, useState } from "react";
+import { FaBox, FaTruck, FaMoneyBillAlt, FaTshirt } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
+import { getProductById, getProductImageById } from "../utils/ApiFunctions";
+import CommandeForm from "./CommandeForm";
+import ProductCarousel from "../common/ProductCarousel";
+import { useAuth } from "../auth/AuthProvider"; // Assuming you have an AuthContext
 
 const Checkout = () => {
-	const [error, setError] = useState(null)
-	const [isLoading, setIsLoading] = useState(true)
+	const [error, setError] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 	const [productInfo, setProductInfo] = useState({
 		image: "",
 		titre: "",
 		prix: "",
 		description: "",
-	})
-	const { productId } = useParams()
+	});
+	const { productId } = useParams();
+	const { user } = useAuth(); // Get user data from AuthContext
+	const navigate = useNavigate(); // Navigate hook to redirect
 
 	useEffect(() => {
+		// Check if the user is authenticated
+		if (!user) {
+			navigate("/login"); // Redirect to login page if user is not authenticated
+			return;
+		}
+
 		const fetchProductData = async () => {
 			try {
 				// Fetch product information
-				const productResponse = await getProductById(productId)
+				const productResponse = await getProductById(productId);
 
 				// Fetch product image
-				const productImage = await getProductImageById(productId)
+				const productImage = await getProductImageById(productId);
 
 				// Update state with product info and image
 				setProductInfo({
 					...productResponse,
 					image: productImage,
-				})
-				setIsLoading(false)
+				});
+				setIsLoading(false);
 			} catch (error) {
-				setError(error.message)
-				setIsLoading(false)
+				setError(error.message);
+				setIsLoading(false);
 			}
-		}
+		};
 
 		// Call the function to fetch data
-		fetchProductData()
-	}, [productId])
+		fetchProductData();
+	}, [productId, user, navigate]); // Include user in the dependencies
 
 	return (
 		<div>
@@ -93,7 +102,7 @@ const Checkout = () => {
 						)}
 					</div>
 					<div className="col-md-8">
-						<CommandeForm />
+						{user && <CommandeForm />} {/* Show the CommandeForm only if user is authenticated */}
 					</div>
 				</div>
 			</section>
@@ -101,7 +110,7 @@ const Checkout = () => {
 				<ProductCarousel />
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Checkout
+export default Checkout;
