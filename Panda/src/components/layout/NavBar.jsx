@@ -26,9 +26,15 @@ const NavBar = () => {
               {/* If user is authenticated, show account options */}
               {user ? (
                 <>
+                  {/* Show Profile if user is logged in */}
+                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+
+                  {/* Show Admin if user has ADMIN role */}
                   {user.roles.includes("ADMIN") && (
                     <NavDropdown.Item href="/admin">Admin</NavDropdown.Item>
                   )}
+
+                  {/* Logout option */}
                   <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
                 </>
               ) : (

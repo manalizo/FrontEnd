@@ -68,9 +68,9 @@ const Productarousel = () => {
 												<Card.Title className="hotel-color">{product.titre}</Card.Title>
 												<Card.Title className="room-price">${product.prix}</Card.Title>
 												<div className="flex-shrink-0">
-													<Link to={`/commande-product/${product.id}`} className="btn btn-hotel btn-sm">
-														Buy Now
-													</Link>
+												<Link to={`/commande-product/${product.id}`} className="btn btn-hotel btn-sm">
+																			Buy Now
+																		</Link>
 												</div>
 											</Card.Body>
 										</Card>

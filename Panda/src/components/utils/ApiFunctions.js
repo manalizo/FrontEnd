@@ -89,7 +89,11 @@ const url = `http://localhost:8084/products/${productId}/image`;
       throw new Error('Error fetching product image');
     }
   }
- 
+  export async function getUserOrdersByEmail(email) {
+    const response = await api.get(`/commandes/${email}`);
+    return response.data;
+}
+  
 
 /* Gestion des commandes */
 export async function addCommande(description, quantite, montant, productid,email) {
