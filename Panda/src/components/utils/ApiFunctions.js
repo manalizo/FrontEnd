@@ -126,7 +126,10 @@ export async function getCommandeById(commandeId) {
 /* This function register a new user */
 export async function registerUser(registration) {
 	try {
-		const response = await api.post("/auth/register-user", registration)
+        const url = `http://localhost:8088/auth/register-user`;
+        const response = await axios.post(url,registration);
+       
+		//const response = await api.post("/auth/register-user", registration)
 		return response.data
 	} catch (error) {
 		if (error.reeponse && error.response.data) {
@@ -138,7 +141,10 @@ export async function registerUser(registration) {
 }
 export async function loginUser(login) {
 	try {
-		const response = await api.post("/auth/login", login)
+        const url = `http://localhost:8088/auth/login`;
+        const response = await axios.post(url,login);
+      
+		//const response = await api.post("/auth/login", login)
 		if (response.status >= 200 && response.status < 300) {
 			return response.data
 		} else {
