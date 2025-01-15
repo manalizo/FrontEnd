@@ -111,7 +111,7 @@ export async function addCommande(description, quantite, montant, productid,emai
 
 export async function deleteCommande(commandeId) {
     const response = await api.delete(`/commandes/delete/${commandeId}`);
-    return response.data;
+
 }
 
 export async function updateCommande(commandeId, commandeData) {
