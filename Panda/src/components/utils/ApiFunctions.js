@@ -24,6 +24,15 @@ export async function getAllProducts() {
         throw new Error("Error fetching products");
     }
 }
+export async function getUserCommandes(email) {
+    try {
+        const response = await axios.get(`/commandes/user/${email}`);
+        return response.data;
+    } catch (error) {
+        console.error("Erreur lors de la récupération des commandes utilisateur :", error);
+        throw error;
+    }
+}
 export async function editProduct(productId, titre, description, image, prix) {
     const formData = new FormData();
     formData.append("titre", titre);
