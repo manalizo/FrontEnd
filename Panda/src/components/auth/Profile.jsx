@@ -10,8 +10,8 @@ const Profile = () => {
     const { user } = useAuth(); // Récupérer l'utilisateur connecté depuis AuthProvider
 
     useEffect(() => {
-        if (user && user.email) { // Vérifier que l'utilisateur est connecté
-            getUserCommandes(user.email)
+        if (user && user.sub) { // Vérifier que l'utilisateur est connecté
+            getUserCommandes(user.sub)
                 .then((data) => {
                     console.log("Commandes récupérées :", data); // Débogage
                     setCommandeInfo(data);

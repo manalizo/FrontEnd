@@ -33,7 +33,7 @@ const CommandeForm = () => {
                 setCommande({
                     ...commande,
                     description: productData.description, // Set description from fetched product
-                    email: user?.email || "", // Set user email if authenticated
+                    email: user?.sub || "", // Set user email if authenticated
                 });
                 setPayment(productData.prix || 0); // Set the price to be used for payment calculation
             } catch (error) {
