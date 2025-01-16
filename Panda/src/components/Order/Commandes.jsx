@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllCommandes } from "../utils/ApiFunctions"; // Supposons que cette fonction existe
 import Header from "../common/Header";
-
+import { Link } from "react-router-dom"
 const Commandes = () => {
     const [commandeInfo, setCommandeInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ const Commandes = () => {
 
     return (
         <section style={{ backgroundColor: "whitesmoke" }}>
-            <Header title={"Existing Commandes"} />
+            <Header title={" Commandes"} />
             {error && <div className="text-danger">{error}</div>}
             {isLoading ? (
                 <div>Loading existing commandes</div>
@@ -39,6 +39,7 @@ const Commandes = () => {
                         <th>Montant</th>
                         <th>Email</th>
                         <th>productid</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,7 +52,16 @@ const Commandes = () => {
                             <td>{commande.date}</td>
                             <td>{commande.montant}</td>
                             <td>{commande.email || "Non disponible"}</td>
-                            <td>{commande.productid || "Non disponible"}</td> {/* Assurez-vous de cette ligne */}
+                            <td>{commande.productid || "Non disponible"}</td> 
+                            <td>
+								 
+                                     <Link to={`/product/${commande.productid}`} className="btn btn-hotel btn-sm">
+                                                        Product Details
+                                                    </Link>
+                    
+							</td>
+
+                           
                         </tr>
                     ))}
                 </tbody>
