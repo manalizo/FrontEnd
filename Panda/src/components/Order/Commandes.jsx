@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { deleteCommande, getAllCommandes } from "../utils/ApiFunctions";  // Assuming these API functions exist
+import { getAllCommandes } from "../utils/ApiFunctions"; // Supposons que cette fonction existe
 import Header from "../common/Header";
-import CommandesTable from "./CommandesTable";  // Assuming a similar table component for orders
 
 const Commandes = () => {
     const [commandeInfo, setCommandeInfo] = useState([]);
@@ -9,28 +8,18 @@ const Commandes = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        setTimeout(() => {
-            getAllCommandes()
-                .then((data) => {
-                    setCommandeInfo(data);
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    setError(error.message);
-                    setIsLoading(false);
-                });
-        }, 1000);
+        getAllCommandes()
+            .then((data) => {
+                console.log("Données reçues depuis l'API :", data); // Vérifiez ici
+                setCommandeInfo(data); // Enregistrez les données
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Erreur lors du chargement des commandes :", error);
+                setIsLoading(false);
+            });
     }, []);
-
-    const handleCommandeCancellation = async (commandeId) => {
-        try {
-            await deleteCommande(commandeId);
-            const data = await getAllCommandes();
-            setCommandeInfo(data);
-        } catch (error) {
-            setError(error.message);
-        }
-    };
+    
 
     return (
         <section style={{ backgroundColor: "whitesmoke" }}>
@@ -39,10 +28,35 @@ const Commandes = () => {
             {isLoading ? (
                 <div>Loading existing commandes</div>
             ) : (
-                <CommandesTable
-                    commandeInfo={commandeInfo}
-                    handleCommandeCancellation={handleCommandeCancellation}
-                />
+                <table className="table table-striped mt-4">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Commande ID</th>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Date</th>
+                        <th>Montant</th>
+                        <th>Email</th>
+                        <th>productid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {commandeInfo.map((commande, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{commande.id}</td>
+                            <td>{commande.description}</td>
+                            <td>{commande.quantite}</td>
+                            <td>{commande.date}</td>
+                            <td>{commande.montant}</td>
+                            <td>{commande.email || "Non disponible"}</td>
+                            <td>{commande.productid || "Non disponible"}</td> {/* Assurez-vous de cette ligne */}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            
             )}
         </section>
     );
